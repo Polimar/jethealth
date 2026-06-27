@@ -27,11 +27,7 @@ function ResultsContent() {
   const result = JSON.parse(resultRaw);
   const level = URGENCY_LEVELS[result.urgencyLevel as keyof typeof URGENCY_LEVELS] || URGENCY_LEVELS.medium;
 
-  const alternatives = result.urgencyLevel === "low" || result.urgencyLevel === "medium" ? [
-    { icon: "🩺", title: "Medico di base", body: "Per valutazione e prescrizioni" },
-    { icon: "☎️", title: "Continuità assistenziale", body: "Guardia medica · notti e festivi · 116117" },
-    { icon: "💊", title: "Farmacia", body: "Consigli su sintomi lievi" },
-  ] : [];
+  const isLowMedium = result.urgencyLevel === "low" || result.urgencyLevel === "medium";
 
   return (
     <div className="max-w-lg mx-auto">
@@ -55,7 +51,7 @@ function ResultsContent() {
 
       {/* Explanation */}
       <Card className="p-4 mb-3">
-        <p className="text-base leading-relaxed text-gray-800 font-serif">{result.explanation}</p>
+        <p className="text-[15px] leading-relaxed text-gray-800 font-serif">{result.explanation}</p>
       </Card>
 
       {/* Recommended action */}
@@ -89,21 +85,64 @@ function ResultsContent() {
         </Card>
       )}
 
-      {/* Alternatives */}
-      {alternatives.length > 0 && (
+      {/* Alternatives - ALWAYS shown for low/medium urgency */}
+      {isLowMedium && (
         <Card className="p-4 mb-3">
-          <div className="text-sm font-bold text-gray-900 mb-1">Alternative al pronto soccorso</div>
+          <div className="text-sm font-bold text-gray-900 mb-1">Dove rivolgerti</div>
           <div className="text-xs text-gray-500 mb-3">Percorsi più adatti a questa urgenza</div>
-          <div className="flex flex-col gap-2">
-            {alternatives.map((alt) => (
-              <div key={alt.title} className="flex items-center gap-3 p-3 border border-gray-100 rounded-xl bg-gray-50/50">
-                <span className="text-lg">{alt.icon}</span>
-                <div>
-                  <div className="text-sm font-semibold text-gray-800">{alt.title}</div>
-                  <div className="text-xs text-gray-500">{alt.body}</div>
-                </div>
+          <div className="flex flex-col gap-2.5">
+            <a href="tel:116117" className="flex items-center gap-3 p-3.5 border border-gray-100 rounded-xl bg-white hover:bg-gray-50 transition-colors">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <span className="text-lg">☎️</span>
               </div>
-            ))}
+              <div className="flex-1">
+                <div className="text-sm font-semibold text-gray-900">Guardia Medica / Continuità assistenziale</div>
+                <div className="text-xs text-gray-500">Notti, weekend e festivi · chiama 116117</div>
+              </div>
+              <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v3a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke="#16a34a" strokeWidth="1.7" />
+                </svg>
+              </div>
+            </a>
+
+            <div className="flex items-center gap-3 p-3.5 border border-gray-100 rounded-xl bg-white">
+              <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
+                <span className="text-lg">🩺</span>
+              </div>
+              <div className="flex-1">
+                <div className="text-sm font-semibold text-gray-900">Medico di base</div>
+                <div className="text-xs text-gray-500">Per valutazione, prescrizioni e certificati</div>
+              </div>
+            </div>
+
+            <Link href="/facilities?type=003" className="flex items-center gap-3 p-3.5 border border-gray-100 rounded-xl bg-white hover:bg-gray-50 transition-colors">
+              <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                <span className="text-lg">💊</span>
+              </div>
+              <div className="flex-1">
+                <div className="text-sm font-semibold text-gray-900">Farmacia</div>
+                <div className="text-xs text-gray-500">Consigli, farmaci da banco e prodotti</div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                <path d="M9 6l6 6-6 6" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+
+            {result.urgencyLevel === "medium" && (
+              <Link href="/facilities" className="flex items-center gap-3 p-3.5 border border-gray-100 rounded-xl bg-white hover:bg-gray-50 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg">🏥</span>
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm font-semibold text-gray-900">Ambulatorio / Casa della Comunità</div>
+                  <div className="text-xs text-gray-500">Cure territoriali senza pronto soccorso</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="flex-shrink-0">
+                  <path d="M9 6l6 6-6 6" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            )}
           </div>
         </Card>
       )}
@@ -131,7 +170,7 @@ function ResultsContent() {
         </div>
       )}
 
-      {/* Actions */}
+      {/* Find facility - for high urgency */}
       {result.facilitySearchRequired && (
         <Link href="/facilities">
           <Button className="w-full h-12 rounded-xl bg-[#0B5FA5] hover:bg-[#094d87] text-white font-bold mb-3 flex items-center gap-2">
@@ -144,7 +183,8 @@ function ResultsContent() {
         </Link>
       )}
 
-      <div className="flex gap-3">
+      {/* Bottom actions */}
+      <div className="flex gap-3 mb-3">
         <Button
           variant="outline"
           className="flex-1 h-11 rounded-xl"
@@ -162,7 +202,7 @@ function ResultsContent() {
       </div>
 
       {/* Disclaimer */}
-      <div className="mt-4 flex gap-2 items-start text-xs text-gray-400">
+      <div className="mt-2 flex gap-2 items-start text-xs text-gray-400 pb-4">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="flex-shrink-0 mt-0.5">
           <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.6" />
           <path d="M12 11v5m0-8h.01" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />

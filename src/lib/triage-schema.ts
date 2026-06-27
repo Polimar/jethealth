@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const TriageInputSchema = z.object({
   symptomsText: z.string().min(10, "Descrivi i sintomi in almeno 10 caratteri"),
-  patient: z.enum(["adulto", "bambino", "neonato", "anziano"]).default("adulto"),
+  patient: z.string().default("adulto"),
   clarifyAnswers: z.record(z.array(z.string())).optional(),
 });
 

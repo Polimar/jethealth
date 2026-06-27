@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
   // Generate clarifying questions
   if (action === "clarify") {
-    const { symptomsText, patient } = body;
+    const { symptomsText } = body;
     if (!symptomsText || symptomsText.length < 5) {
       return NextResponse.json({ error: "Descrizione troppo breve" }, { status: 400 });
     }
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     }
 
     try {
-      const questions = await generateClarifyQuestions(symptomsText, patient || "adulto");
+      const questions = await generateClarifyQuestions(symptomsText);
       return NextResponse.json(questions);
     } catch (err) {
       console.error("OpenAI clarify error:", err);

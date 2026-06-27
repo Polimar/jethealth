@@ -35,12 +35,13 @@ OUTPUT: Rispondi SOLO con un JSON valido con questa struttura:
 export async function runTriageClassification(
   input: TriageInput
 ): Promise<TriageResult> {
-  const patientLabel = {
+  const patientMap: Record<string, string> = {
     adulto: "adulto",
     bambino: "bambino (2-14 anni)",
     neonato: "neonato/lattante (0-2 anni)",
     anziano: "persona anziana (>65 anni)",
-  }[input.patient];
+  };
+  const patientLabel = patientMap[input.patient] || "non specificato (deduci dal contesto)";
 
   let userMessage = `Paziente: ${patientLabel}\nDescrizione sintomi: "${input.symptomsText}"`;
 
@@ -81,20 +82,19 @@ export async function runTriageClassification(
 
 export async function generateClarifyQuestions(
   symptomsText: string,
-  patient: string
+  patient?: string
 ): Promise<{ intro: string; questions: Array<{ id: string; text: string; hint?: string; multi: boolean; options: string[] }> }> {
-  const patientLabel = {
-    adulto: "adulto",
-    bambino: "bambino",
-    neonato: "neonato",
-    anziano: "persona anziana",
-  }[patient] || "adulto";
+  const patientHint = patient && patient !== "adulto"
+    ? `Paziente: ${patient}.`
+    : "Determina dal contesto chi è il paziente (adulto, bambino, neonato, anziano). Se non è chiaro, includi una domanda per chiarirlo.";
 
   const prompt = `Sei un assistente di triage sanitario PRUDENTE per la Regione Lazio.
-Paziente: ${patientLabel}. Descrizione sintomi: "${symptomsText}".
+${patientHint} Descrizione sintomi: "${symptomsText}".
 
-Genera da 3 a 4 domande di approfondimento in ITALIANO con 3-5 opzioni brevi ciascuna.
-Includi sempre una domanda sui segnali d'allarme presenti ora.
+Genera da 3 a 5 domande di approfondimento in ITALIANO con 3-5 opzioni brevi ciascuna.
+- Se dal testo NON è chiaro chi è il paziente (adulto, bambino, neonato, anziano), includi come PRIMA domanda "Chi ha questi sintomi?" con opzioni appropriate.
+- Includi sempre una domanda sui segnali d'allarme presenti ora.
+- Includi domande su durata, intensità, e fattori di rischio.
 
 Rispondi SOLO con JSON valido:
 {"intro":"frase empatica breve","questions":[{"id":"durata","text":"...","hint":"","multi":false,"options":["..."]}]}`;
