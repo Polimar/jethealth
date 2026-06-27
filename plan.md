@@ -1,6 +1,6 @@
 ---
-name: JetHealth MVP Build
-overview: Build the JetHealth MVP as a Next.js 15 app with shadcn/ui, Supabase (Cloud) for DB/Auth/Email, OpenAI-powered triage, Leaflet maps, and Docker deployment. The app lets authenticated users in Lazio describe symptoms, get urgency classification, and find the most appropriate healthcare facility.
+name: JetHealth MVP Build (Final Merged Plan)
+overview: Build the JetHealth MVP as a Next.js 15 app with shadcn/ui, Supabase (Cloud) for DB/Auth/Email, OpenAI-powered triage, Leaflet maps, and Docker deployment. The app lets authenticated users in Lazio describe symptoms, get urgency classification, and find the most appropriate healthcare facility. Tables use `jh_` prefix. Supabase project ID - htxlqassurrrajnlefyb.
 todos:
   - id: scaffold
     content: Scaffold Next.js 15 project with TypeScript, Tailwind CSS v4, and shadcn/ui
