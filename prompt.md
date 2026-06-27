@@ -421,7 +421,37 @@ Le versioni successive possono includere:
 * PDF per medico;
 * notifiche di follow-up;
 * dashboard per strutture sanitarie;
+* dashboard anonima per Regione/ASL;
 * previsione dei picchi di affluenza;
 * integrazione con fascicolo sanitario, se autorizzata;
 * supporto multilingua per turisti;
 * accessibilità vocale per anziani.
+
+### 16. Feature addizionale: dashboard anonima per Regione/ASL
+
+Come funzionalità futura e non primaria, JetHealth può includere una dashboard istituzionale per Regione, ASL o soggetti sanitari autorizzati, basata esclusivamente su dati aggregati e anonimizzati.
+
+L’obiettivo non è monitorare singoli cittadini, ma offrire insight di sanità pubblica utili per capire in tempo quasi reale l’andamento dei bisogni sanitari sul territorio.
+
+La dashboard può mostrare:
+
+* zone con aumento anomalo di sintomi respiratori, gastrointestinali, febbrili o neurologici;
+* trend temporali anonimi dei sintomi segnalati;
+* possibili segnali precoci di picchi influenzali, epidemici o stagionali;
+* aumento della domanda sanitaria per area geografica;
+* distribuzione dei bisogni tra pronto soccorso, medico di base, continuità assistenziale, farmacia e teleconsulto;
+* stima degli accessi evitati al pronto soccorso grazie al reindirizzamento verso percorsi più appropriati;
+* alert aggregati su possibili cluster territoriali di sintomi compatibili con malattie rilevanti;
+* serie storiche utilizzabili per modelli di machine learning o modelli statistici di early prediction dei picchi di malattia.
+
+Questa funzionalità deve essere progettata con vincoli forti:
+
+* nessun dato identificativo personale;
+* nessuna possibilità di risalire a un singolo utente;
+* aggregazione per soglie minime di numerosità;
+* minimizzazione dei dati raccolti;
+* consenso chiaro ove necessario;
+* governance pubblica e auditabilità degli algoritmi;
+* uso esclusivo per finalità di salute pubblica, pianificazione sanitaria e prevenzione.
+
+La dashboard deve restare secondaria rispetto alla missione principale di JetHealth, che è aiutare il singolo utente a scegliere il percorso sanitario più appropriato in modo sicuro e prudente.
