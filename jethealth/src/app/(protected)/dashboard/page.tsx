@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCurrentProfile } from "@/lib/auth-helpers";
+import { createClient } from "@/lib/supabase/server";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,8 +7,20 @@ import { Disclaimer } from "@/components/disclaimer";
 import { Stethoscope, MapPin, History, ArrowRight } from "lucide-react";
 
 export default async function DashboardPage() {
-  const profile = await getCurrentProfile();
-  const firstName = profile?.name?.split(" ")[0] || "";
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("name")
+    .eq("id", user?.id ?? "")
+    .single();
+  const metaName =
+    (user?.user_metadata?.name as string | undefined) ?? "";
+  const fullName = profile?.name?.trim() || metaName.trim();
+  const firstName =
+    fullName.split(" ")[0] || user?.email?.split("@")[0] || "";
 
   return (
     <div className="space-y-6">
