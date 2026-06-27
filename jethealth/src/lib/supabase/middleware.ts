@@ -14,9 +14,10 @@ export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_INTERNAL_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      cookieOptions: { name: "sb-jethealth-auth-token" },
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -41,8 +42,9 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // API routes handle their own auth and must not be redirected to HTML login.
-  if (pathname.startsWith("/api/")) {
+  // API routes and the Supabase proxy handle their own auth and must not be
+  // redirected to the HTML login page.
+  if (pathname.startsWith("/api/") || pathname.startsWith("/sb/")) {
     return supabaseResponse;
   }
 
