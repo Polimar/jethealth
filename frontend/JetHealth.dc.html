@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #E5E8EE; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .jh-scroll::-webkit-scrollbar { width: 0; height: 0; }
+  .jh-scroll { scrollbar-width: none; }
+  textarea { font-family: 'Source Serif 4', Georgia, serif; }
+  textarea::placeholder { color: #9AA6B3; }
+  input[type=range] { -webkit-appearance: none; appearance: none; height: 5px; border-radius: 99px; background: #DDE4ED; outline: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #0B5FA5; border: 3px solid #fff; box-shadow: 0 1px 4px rgba(11,95,165,.35); cursor: pointer; }
+  @keyframes jhSpin { to { transform: rotate(360deg); } }
+  @keyframes jhPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(200,49,43,.45); } 50% { box-shadow: 0 0 0 14px rgba(200,49,43,0); } }
+  @keyframes jhBar { from { width: 4%; } to { width: 96%; } }
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px;font-family:'DM Sans',sans-serif;">
+<div style="{{ rootStyle }}">
+
+  <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:0 0 auto;height:58px;display:flex;align-items:center;gap:10px;padding:0 16px;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);position:relative;z-index:5;">
+    <button onClick="{{ back }}" aria-label="Indietro" style="width:36px;height:36px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;border:none;background:#F1F4F8;border-radius:10px;cursor:pointer;color:#374151;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#9CA3AF;font-weight:600;">{{ headerKicker }}</div>
+      <div style="font-size:15.5px;font-weight:600;color:#111827;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em;">{{ headerTitle }}</div>
+    </div>
+    <div style="display:flex;gap:3px;">
+      <button onClick="{{ setIt }}" style="{{ itPillStyle }}">IT</button>
+      <button onClick="{{ setEn }}" style="{{ enPillStyle }}">EN</button>
+    </div>
+  </div>
+  <sc-if value="{{ showProgress }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:0 0 auto;height:2px;background:#EDF0F5;"><div style="{{ progressStyle }}"></div></div>
+  </sc-if>
+  </sc-if>
+
+  <div class="jh-scroll" style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;position:relative;">
+
+  <sc-if value="{{ enNotice }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#EAF2FB;color:#0B5FA5;font-size:11.5px;text-align:center;padding:6px 12px;font-weight:500;">EN · safety guidance translated · full clinical copy coming soon</div>
+  </sc-if>
+
+  <!-- HOME -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div style="">
+    <div style="background:linear-gradient(160deg,#0C5399 0%,#083D74 100%);padding:22px 22px 32px;color:#fff;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25);">
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg>
+          </div>
+          <span style="font-weight:700;font-size:17px;letter-spacing:-.02em;color:#fff;">JetHealth</span>
+        </div>
+        <div style="display:flex;gap:3px;">
+          <button onClick="{{ setIt }}" style="{{ itPillStyleLight }}">IT</button>
+          <button onClick="{{ setEn }}" style="{{ enPillStyleLight }}">EN</button>
+        </div>
+      </div>
+      <div style="margin-top:28px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:600;">{{ t.homeKicker }}</div>
+      <h1 style="margin:10px 0 0;font-size:28px;line-height:1.14;font-weight:700;letter-spacing:-.03em;text-wrap:balance;">{{ t.heroTitle }}</h1>
+      <p style="margin:14px 0 0;font-family:'Source Serif 4',serif;font-size:15px;line-height:1.58;color:rgba(255,255,255,.72);">{{ t.heroSub }}</p>
+    </div>
+
+    <div style="padding:20px 18px 10px;display:flex;flex-direction:column;gap:10px;margin-top:-20px;">
+      <button onClick="{{ startTriage }}" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:56px;border:none;border-radius:14px;background:#0B5FA5;color:#fff;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;letter-spacing:-.01em;box-shadow:0 2px 6px rgba(11,95,165,.2),0 10px 28px rgba(11,95,165,.22);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="9" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        {{ t.ctaPrimary }}
+      </button>
+      <button onClick="{{ goFacilitiesGeneric }}" style="display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:50px;border:1px solid rgba(0,0,0,.10);border-radius:14px;background:#fff;color:#1D4E89;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer;letter-spacing:-.01em;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.6"/></svg>
+        {{ t.ctaSecondary }}
+      </button>
+    </div>
+
+    <div style="padding:16px 18px 4px;">
+      <div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9CA3AF;font-weight:600;margin-bottom:10px;">{{ t.howItWorks }}</div>
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(0,0,0,.05);">
+          <div style="flex:0 0 auto;width:28px;height:28px;border-radius:8px;background:#0B5FA5;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;">{{ s.n }}</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:600;color:#111827;letter-spacing:-.01em;">{{ s.title }}</div>
+            <div style="font-size:13px;color:#6B7280;line-height:1.45;margin-top:2px;">{{ s.body }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="padding:14px 16px 22px;">
+      <div style="display:flex;gap:11px;align-items:flex-start;background:#FBE9E7;border:1px solid #F3CDC8;border-radius:12px;padding:13px 14px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:1px;"><path d="M12 9v4m0 4h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" stroke="#C8312B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div style="font-size:12.5px;line-height:1.5;color:#7A2A26;">{{ t.disclaimer }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- CONSENT -->
+  <sc-if value="{{ isConsent }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:22px 18px 26px;">
+    <div style="width:46px;height:46px;border-radius:12px;background:#EAF2FB;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v5c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V6l8-4z" stroke="#0B5FA5" stroke-width="1.7"/><path d="M9 12l2 2 4-4" stroke="#0B5FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2 style="margin:0;font-size:21px;font-weight:800;color:#111827;letter-spacing:-.01em;">Prima di iniziare</h2>
+    <p style="margin:10px 0 0;font-family:'Source Serif 4',serif;font-size:15px;line-height:1.55;color:#566573;">Raccogliamo solo i dati strettamente necessari: sintomi e posizione. Non serve un account e i sintomi non vengono salvati, salvo tua scelta.</p>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:11px;">
+      <sc-for list="{{ privacyPoints }}" as="p" hint-placeholder-count="3">
+        <div style="display:flex;gap:11px;align-items:flex-start;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10" fill="#E7F4EE"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#1E8A5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div style="font-size:13.5px;line-height:1.45;color:#3E4C5A;">{{ p }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <button onClick="{{ toggleConsent }}" style="{{ consentBoxStyle }}">
+      <div style="{{ consentCheckStyle }}"><sc-if value="{{ consent }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if></div>
+      <span style="font-size:13.5px;line-height:1.45;color:#2A3744;text-align:left;">Acconsento al trattamento dei dati indicati per ricevere un orientamento sanitario. <span style="color:#0B5FA5;font-weight:600;">Leggi l'informativa</span></span>
+    </button>
+    <button onClick="{{ consentContinue }}" style="{{ consentBtnStyle }}">Continua</button>
+  </div>
+  </sc-if>
+
+  <!-- INTAKE -->
+  <sc-if value="{{ isIntake }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:18px 16px 24px;">
+    <h2 style="margin:0;font-size:20px;font-weight:800;color:#111827;letter-spacing:-.01em;">Raccontaci cosa succede</h2>
+    <p style="margin:7px 0 0;font-size:13.5px;color:#6B7280;line-height:1.45;">Scrivi con parole tue o scegli un esempio. Più dettagli, più l'orientamento è preciso.</p>
+    <div style="margin-top:14px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#8893A1;font-weight:600;margin-bottom:8px;">Chi ha i sintomi?</div>
+    <div style="display:flex;gap:7px;">
+      <sc-for list="{{ patientOpts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for>
+    </div>
+    <div style="margin-top:18px;">
+      <textarea onChange="{{ setText }}" value="{{ freeText }}" placeholder="Es. Ho febbre a 38,5, mal di gola e tosse da due giorni…" style="width:100%;min-height:104px;resize:none;border:1.5px solid #D7DFE9;border-radius:13px;padding:13px 14px;font-family:'Source Serif 4',serif;font-size:15px;line-height:1.5;color:#111827;background:#fff;outline:none;"></textarea>
+    </div>
+    <div style="margin-top:12px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#8893A1;font-weight:600;margin-bottom:8px;">Esempi rapidi</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <sc-for list="{{ examples }}" as="e" hint-placeholder-count="3">
+        <button onClick="{{ e.onClick }}" style="display:flex;align-items:center;gap:10px;text-align:left;width:100%;padding:11px 13px;border:1px solid #E3E8EF;border-radius:11px;background:#FAFBFD;cursor:pointer;font-family:inherit;">
+          <span style="font-size:18px;line-height:1;">{{ e.icon }}</span>
+          <span style="font-size:13.5px;color:#3E4C5A;line-height:1.4;flex:1;">{{ e.text }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <button onClick="{{ intakeContinue }}" style="margin-top:20px;width:100%;height:52px;border:none;border-radius:13px;background:#0B5FA5;color:#fff;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 6px 16px rgba(11,95,165,.24);">Continua</button>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:center;color:#94A0AD;font-size:11.5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v5c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V6l8-4z" stroke="currentColor" stroke-width="1.6"/></svg> I sintomi non vengono salvati</div>
+  </div>
+  </sc-if>
+
+  <!-- THINKING (LLM legge la descrizione) -->
+  <sc-if value="{{ isThinking }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:48px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;">
+    <div style="width:54px;height:54px;border-radius:50%;border:4px solid #E2EAF3;border-top-color:#0B5FA5;animation:jhSpin .9s linear infinite;"></div>
+    <h2 style="margin:22px 0 0;font-size:19px;font-weight:800;color:#111827;">Sto leggendo quello che hai scritto…</h2>
+    <p style="margin:8px 0 0;font-size:13.5px;color:#6B7280;line-height:1.5;max-width:270px;">L'assistente clinico analizza la tua descrizione e prepara alcune domande mirate per orientarti meglio.</p>
+    <sc-if value="{{ freeText }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:20px;max-width:300px;background:#F2F5F9;border:1px solid rgba(0,0,0,.07);border-radius:12px;padding:12px 14px;font-family:'Source Serif 4',serif;font-size:13.5px;color:#46535F;line-height:1.45;text-align:left;">“{{ freeText }}”</div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- CLARIFY (checkbox generate dall'LLM) -->
+  <sc-if value="{{ isClarify }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:18px 16px 24px;">
+    <div style="display:flex;gap:9px;align-items:flex-start;background:#EAF2FB;border:1px solid #CFE0F2;border-radius:13px;padding:13px 14px;margin-bottom:16px;">
+      <div style="flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:#0B5FA5;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3m13.5-5.5l-2 2m-7 7l-2 2m11 0l-2-2m-7-7l-2-2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#0B5FA5;">Assistente clinico JetHealth</div><div style="font-size:13px;color:#3E4C5A;line-height:1.45;margin-top:2px;">{{ clarifyIntro }}</div></div>
+    </div>
+    <sc-if value="{{ clarifyFallback }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:14px;font-size:11.5px;color:#94A0AD;line-height:1.45;display:flex;gap:7px;align-items:flex-start;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:2px;"><circle cx="12" cy="12" r="10" stroke="#94A0AD" stroke-width="1.6"/><path d="M12 11v5m0-8h.01" stroke="#94A0AD" stroke-width="1.8" stroke-linecap="round"/></svg> Domande standard di sicurezza (assistente non raggiungibile in questo momento).</div>
+    </sc-if>
+    <sc-for list="{{ clarifyQuestions }}" as="q" hint-placeholder-count="4">
+      <div style="{{ q.cardStyle }}">
+        <div style="font-size:14.5px;font-weight:700;color:#111827;line-height:1.35;">{{ q.text }}</div>
+        <sc-if value="{{ q.hint }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#94A0AD;margin-top:3px;">{{ q.hint }}</div></sc-if>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px;">
+          <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+    <button onClick="{{ analyze }}" style="margin-top:8px;width:100%;height:54px;border:none;border-radius:13px;background:#0B5FA5;color:#fff;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 8px 20px rgba(11,95,165,.26);display:flex;align-items:center;justify-content:center;gap:9px;">Concludi l'analisi <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div style="margin-top:12px;font-size:11.5px;color:#94A0AD;line-height:1.45;text-align:center;">Le risposte restano sul dispositivo. In caso di peggioramento rapido chiama il 112/118.</div>
+  </div>
+  </sc-if>
+
+  <!-- DETAILS (fallback legacy, non usato nel flusso LLM) -->
+  <sc-if value="{{ isDetails }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:18px 16px 24px;">
+    <h2 style="margin:0;font-size:20px;font-weight:800;color:#111827;letter-spacing:-.01em;">Qualche dettaglio</h2>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;"><sc-for list="{{ factorOpts }}" as="o" hint-placeholder-count="5"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></div>
+    <button onClick="{{ analyze }}" style="margin-top:24px;width:100%;height:54px;border:none;border-radius:13px;background:#0B5FA5;color:#fff;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;">Analizza i sintomi</button>
+  </div>
+  </sc-if>
+
+  <!-- ANALYZING -->
+  <sc-if value="{{ isAnalyzing }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:60px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;">
+    <div style="width:54px;height:54px;border-radius:50%;border:4px solid #E2EAF3;border-top-color:#0B5FA5;animation:jhSpin .9s linear infinite;"></div>
+    <h2 style="margin:22px 0 0;font-size:19px;font-weight:800;color:#111827;">Sto preparando il tuo orientamento…</h2>
+    <p style="margin:8px 0 0;font-size:13.5px;color:#6B7280;line-height:1.5;max-width:260px;">L'assistente clinico unisce la tua descrizione e le risposte a criteri di triage prudenti. Nessuna diagnosi, solo orientamento.</p>
+    <div style="margin-top:22px;width:200px;height:4px;background:#EDF0F5;border-radius:99px;overflow:hidden;"><div style="height:100%;background:#0B5FA5;border-radius:99px;animation:jhBar 1.3s ease forwards;"></div></div>
+  </div>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+  <div style="">
+    <div style="{{ resultBannerStyle }}">
+      <div style="display:flex;align-items:center;gap:11px;">
+        <div style="{{ resultIconWrap }}">{{ resultIcon }}</div>
+        <div>
+          <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:.7;">Livello di urgenza</div>
+          <div style="font-size:23px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-top:2px;">{{ r.levelLabel }}</div>
+        </div>
+      </div>
+      <div style="{{ confidenceStyle }}">Affidabilità {{ r.confidence }}</div>
+    </div>
+    <div style="padding:16px 16px 20px;display:flex;flex-direction:column;gap:14px;">
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:15px;">
+        <p style="margin:0;font-family:'Source Serif 4',serif;font-size:15.5px;line-height:1.55;color:#26323F;">{{ r.explanation }}</p>
+      </div>
+      <div style="{{ actionCardStyle }}">
+        <div style="font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:{{ r.color }};margin-bottom:5px;">Azione consigliata</div>
+        <div style="font-size:16px;font-weight:700;color:#111827;line-height:1.3;">{{ r.actionLabel }}</div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:15px;">
+        <div style="font-size:13.5px;font-weight:700;color:#111827;margin-bottom:11px;display:flex;align-items:center;gap:7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0B5FA5" stroke-width="1.7"/><path d="M12 7v5l3 2" stroke="#0B5FA5" stroke-width="1.7" stroke-linecap="round"/></svg> Cosa fare ora</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ r.nextSteps }}" as="n" hint-placeholder-count="3">
+            <div style="display:flex;gap:10px;align-items:flex-start;"><div style="flex:0 0 auto;width:21px;height:21px;border-radius:7px;background:#EAF2FB;color:#0B5FA5;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;">{{ n.n }}</div><div style="font-size:14px;line-height:1.45;color:#3E4C5A;flex:1;">{{ n.text }}</div></div>
+          </sc-for>
+        </div>
+      </div>
+      <sc-if value="{{ hasAlternatives }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:15px;">
+        <div style="font-size:13.5px;font-weight:700;color:#111827;margin-bottom:3px;">Alternative al pronto soccorso</div>
+        <div style="font-size:12.5px;color:#7B8795;margin-bottom:11px;">Percorsi più adatti a questa urgenza</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ alternatives }}" as="a" hint-placeholder-count="3">
+            <div style="display:flex;gap:11px;align-items:center;padding:10px 11px;border:1px solid #E9EDF3;border-radius:11px;background:#FAFBFD;">
+              <span style="font-size:19px;">{{ a.icon }}</span>
+              <div style="flex:1;"><div style="font-size:13.5px;font-weight:600;color:#2A3744;">{{ a.title }}</div><div style="font-size:12px;color:#7B8795;line-height:1.35;margin-top:1px;">{{ a.body }}</div></div>
+              <sc-if value="{{ a.phone }}" hint-placeholder-val="{{ false }}"><a href="{{ a.tel }}" style="flex:0 0 auto;width:36px;height:36px;border-radius:9px;background:#E7F4EE;display:flex;align-items:center;justify-content:center;text-decoration:none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L12 13l5 2v3a1 1 0 01-1 1A14 14 0 014 6a1 1 0 011-2z" stroke="#1E8A5B" stroke-width="1.6" stroke-linejoin="round"/></svg></a></sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+      <div style="background:#FBF6E9;border:1px solid #EAD9A8;border-radius:14px;padding:15px;">
+        <div style="font-size:13.5px;font-weight:700;color:#8A6410;margin-bottom:9px;display:flex;align-items:center;gap:7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" stroke="#B8860B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Quando preoccuparsi</div>
+        <p style="margin:0 0 9px;font-size:13px;color:#6B5A1E;line-height:1.45;">Chiama subito il <strong>112/118</strong> o vai in pronto soccorso se compare:</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <sc-for list="{{ r.watchFor }}" as="w" hint-placeholder-count="3">
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:#C8312B;font-weight:700;margin-top:1px;">•</span><span style="font-size:13px;color:#5C4E1A;line-height:1.4;">{{ w }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <sc-if value="{{ r.facilitySearchRequired }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ goFacilities }}" style="width:100%;height:52px;border:none;border-radius:13px;background:#0B5FA5;color:#fff;font-size:15.5px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="10" r="2.4" stroke="#fff" stroke-width="1.7"/></svg> Trova la struttura più adatta</button>
+      </sc-if>
+      <div style="display:flex;gap:9px;">
+        <button onClick="{{ goSummary }}" style="flex:1;height:48px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;color:#0B5FA5;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">Riepilogo medico</button>
+        <button onClick="{{ saveSummary }}" style="flex:1;height:48px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;color:#0B5FA5;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">Salva riepilogo</button>
+      </div>
+      <div style="display:flex;gap:9px;align-items:flex-start;padding:2px 2px 0;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:2px;"><circle cx="12" cy="12" r="10" stroke="#94A0AD" stroke-width="1.6"/><path d="M12 11v5m0-8h.01" stroke="#94A0AD" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <div style="font-size:11.5px;color:#94A0AD;line-height:1.45;">{{ r.disclaimer }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- EMERGENCY -->
+  <sc-if value="{{ isEmergency }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#C8312B;min-height:100%;">
+    <div style="padding:26px 20px 22px;color:#fff;">
+      <div style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#FFD9D5;"><span style="width:9px;height:9px;border-radius:50%;background:#fff;animation:jhPulse 1.4s infinite;"></span> Possibile emergenza</div>
+      <h1 style="margin:14px 0 0;font-size:27px;font-weight:800;line-height:1.15;letter-spacing:-.01em;">Chiama subito il 112/118</h1>
+      <p style="margin:11px 0 0;font-family:'Source Serif 4',serif;font-size:15.5px;line-height:1.5;color:#FFE3E0;">I segnali indicati possono richiedere assistenza immediata. Non guidare da solo se hai sintomi gravi.</p>
+      <a href="tel:112" style="margin-top:20px;display:flex;align-items:center;justify-content:center;gap:11px;width:100%;height:62px;background:#fff;border-radius:14px;text-decoration:none;color:#C8312B;font-size:21px;font-weight:800;box-shadow:0 10px 26px rgba(0,0,0,.22);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#C8312B"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v3a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
+        Chiama 112
+      </a>
+      <div style="margin-top:10px;display:flex;gap:9px;">
+        <a href="tel:118" style="flex:1;height:46px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.55);border-radius:12px;text-decoration:none;color:#fff;font-size:14px;font-weight:600;">Emergenza 118</a>
+        <button onClick="{{ goEmergencyFacilities }}" style="flex:1;height:46px;border:1.5px solid rgba(255,255,255,.55);border-radius:12px;background:transparent;color:#fff;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">PS più vicino</button>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:20px 20px 0 0;margin-top:6px;padding:18px 16px 24px;min-height:200px;">
+      <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:4px;">Mentre aspetti i soccorsi</div>
+      <div style="display:flex;flex-direction:column;gap:9px;margin-top:10px;">
+        <sc-for list="{{ emergencyTips }}" as="tp" hint-placeholder-count="4">
+          <div style="display:flex;gap:10px;align-items:flex-start;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10" fill="#FBE9E7"/><path d="M12 8v5m0 3h.01" stroke="#C8312B" stroke-width="2" stroke-linecap="round"/></svg><div style="font-size:13.5px;line-height:1.45;color:#3E4C5A;flex:1;">{{ tp.text }}</div></div>
+        </sc-for>
+      </div>
+      <button onClick="{{ goSummary }}" style="margin-top:18px;width:100%;height:48px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;color:#0B5FA5;font-size:14.5px;font-weight:600;font-family:inherit;cursor:pointer;">Prepara riepilogo per i soccorritori</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- FACILITIES -->
+  <sc-if value="{{ isFacilities }}" hint-placeholder-val="{{ false }}">
+  <div style="">
+    <sc-if value="{{ facBannerOn }}" hint-placeholder-val="{{ false }}"><div style="{{ facBannerStyle }}">{{ facBannerText }}</div></sc-if>
+    <div style="position:relative;height:196px;background:#DCE6EC;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 30px,rgba(255,255,255,.5) 30px 32px),repeating-linear-gradient(90deg,transparent 0 30px,rgba(255,255,255,.5) 30px 32px);"></div>
+      <div style="position:absolute;top:46%;left:-5%;width:110%;height:13px;background:#EEF3F6;transform:rotate(-7deg);"></div>
+      <div style="position:absolute;top:18%;left:30%;width:11px;height:90%;background:#EEF3F6;transform:rotate(9deg);"></div>
+      <div style="position:absolute;top:62%;left:-5%;width:120%;height:9px;background:#C7E0D2;transform:rotate(4deg);opacity:.7;"></div>
+      <sc-for list="{{ facilities }}" as="f" hint-placeholder-count="4"><button onClick="{{ f.select }}" style="{{ f.pinStyle }}" aria-label="{{ f.name }}">{{ f.pinRank }}</button></sc-for>
+      <div style="position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:#0B5FA5;border:3px solid #fff;box-shadow:0 0 0 4px rgba(11,95,165,.25);"></div>
+      <div style="position:absolute;left:50%;top:54%;transform:translate(-50%,16px);font-size:10px;font-weight:700;color:#0B5FA5;background:rgba(255,255,255,.92);padding:1px 6px;border-radius:6px;">Tu</div>
+    </div>
+    <div style="padding:14px 16px 6px;display:flex;align-items:flex-end;justify-content:space-between;">
+      <div><div style="font-size:16px;font-weight:800;color:#111827;">{{ facListTitle }}</div><div style="font-size:12px;color:#7B8795;">Ordinate per adeguatezza · {{ facCount }} strutture</div></div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#0B5FA5;font-weight:600;background:#EAF2FB;padding:5px 9px;border-radius:8px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2v3m0 14v3m10-10h-3M5 12H2" stroke="#0B5FA5" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="#0B5FA5" stroke-width="1.8"/></svg> Salute Lazio</div>
+    </div>
+    <div style="padding:6px 16px 22px;display:flex;flex-direction:column;gap:10px;">
+      <sc-for list="{{ facilities }}" as="f" hint-placeholder-count="4">
+        <button onClick="{{ f.select }}" style="{{ f.cardStyle }}">
+          <div style="display:flex;align-items:flex-start;gap:11px;">
+            <div style="{{ f.rankBadge }}">{{ f.pinRank }}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+                <span style="font-size:15px;font-weight:700;color:#111827;">{{ f.name }}</span>
+                <sc-if value="{{ f.topPick }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#1E8A5B;background:#E7F4EE;padding:2px 7px;border-radius:6px;">Consigliato</span></sc-if>
+              </div>
+              <div style="font-size:12.5px;color:#7B8795;margin-top:2px;line-height:1.35;">{{ f.address }}</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+                <span style="{{ f.typeChip }}">{{ f.typeLabel }}</span>
+                <sc-if value="{{ f.matchTag }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:600;color:#0B5FA5;background:#EAF2FB;padding:3px 8px;border-radius:7px;">{{ f.matchTag }}</span></sc-if>
+              </div>
+              <div style="display:flex;gap:14px;margin-top:10px;">
+                <div><div style="font-size:15px;font-weight:700;color:#111827;">{{ f.distance }}</div><div style="font-size:10.5px;color:#94A0AD;text-transform:uppercase;letter-spacing:.05em;">km · {{ f.eta }}′ auto</div></div>
+                <div><div style="font-size:15px;font-weight:700;color:{{ f.waitColor }};">{{ f.waitMin }}′</div><div style="font-size:10.5px;color:#94A0AD;text-transform:uppercase;letter-spacing:.05em;">attesa</div></div>
+                <div><div style="font-size:15px;font-weight:700;color:{{ f.waitColor }};">{{ f.waiting }}</div><div style="font-size:10.5px;color:#94A0AD;text-transform:uppercase;letter-spacing:.05em;">in coda</div></div>
+              </div>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:2px;"><path d="M9 6l6 6-6 6" stroke="#B6C0CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+      </sc-for>
+      <div style="display:flex;gap:8px;align-items:flex-start;padding:4px 2px;margin-top:2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:2px;"><circle cx="12" cy="12" r="10" stroke="#94A0AD" stroke-width="1.6"/><path d="M12 11v5m0-8h.01" stroke="#94A0AD" stroke-width="1.8" stroke-linecap="round"/></svg><div style="font-size:11px;color:#94A0AD;line-height:1.4;">Tempi e code stimati da dati Salute Lazio (esempio dimostrativo). In emergenza chiama sempre il 112/118.</div></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- DETAIL -->
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <div style="">
+    <sc-if value="{{ d.emerg }}" hint-placeholder-val="{{ false }}"><div style="background:#C8312B;color:#fff;font-size:12.5px;font-weight:600;text-align:center;padding:9px 14px;">In emergenza chiama subito il <a href="tel:112" style="color:#fff;text-decoration:underline;font-weight:700;">112/118</a></div></sc-if>
+    <div style="position:relative;height:130px;background:#DCE6EC;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 26px,rgba(255,255,255,.5) 26px 28px),repeating-linear-gradient(90deg,transparent 0 26px,rgba(255,255,255,.5) 26px 28px);"></div>
+      <div style="position:absolute;left:50%;top:50%;width:30px;height:30px;background:#0B5FA5;transform:translate(-50%,-50%) rotate(-45deg);border-radius:50% 50% 50% 0;box-shadow:0 6px 14px rgba(11,95,165,.4);"></div>
+    </div>
+    <div style="padding:16px 16px 24px;">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <h2 style="margin:0;font-size:20px;font-weight:800;color:#111827;letter-spacing:-.01em;">{{ d.name }}</h2>
+        <sc-if value="{{ d.topPick }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;font-weight:700;text-transform:uppercase;color:#1E8A5B;background:#E7F4EE;padding:2px 7px;border-radius:6px;">Consigliato</span></sc-if>
+      </div>
+      <div style="font-size:13px;color:#7B8795;margin-top:3px;">{{ d.typeLabel }}</div>
+      <div style="display:flex;gap:9px;margin-top:14px;">
+        <div style="flex:1;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:12px;padding:11px;text-align:center;"><div style="font-size:18px;font-weight:800;color:#111827;">{{ d.distance }}</div><div style="font-size:10.5px;color:#94A0AD;text-transform:uppercase;letter-spacing:.05em;">km</div></div>
+        <div style="flex:1;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:12px;padding:11px;text-align:center;"><div style="font-size:18px;font-weight:800;color:{{ d.waitColor }};">{{ d.waitMin }}′</div><div style="font-size:10.5px;color:#94A0AD;text-transform:uppercase;letter-spacing:.05em;">attesa</div></div>
+        <div style="flex:1;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:12px;padding:11px;text-align:center;"><div style="font-size:18px;font-weight:800;color:{{ d.waitColor }};">{{ d.waiting }}</div><div style="font-size:10.5px;color:#94A0AD;text-transform:uppercase;letter-spacing:.05em;">in coda</div></div>
+      </div>
+      <div style="margin-top:16px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:6px 14px;">
+        <div style="display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid rgba(0,0,0,.06);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z" stroke="#7B8795" stroke-width="1.6"/><circle cx="12" cy="10" r="2.2" stroke="#7B8795" stroke-width="1.6"/></svg><div style="flex:1;font-size:13.5px;color:#3E4C5A;">{{ d.address }}</div></div>
+        <div style="display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid rgba(0,0,0,.06);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#7B8795" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="#7B8795" stroke-width="1.6" stroke-linecap="round"/></svg><div style="flex:1;font-size:13.5px;color:#3E4C5A;">Pronto soccorso attivo 24h su 24</div></div>
+        <div style="display:flex;align-items:center;gap:11px;padding:11px 0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L12 13l5 2v3a1 1 0 01-1 1A14 14 0 014 6a1 1 0 011-2z" stroke="#7B8795" stroke-width="1.6" stroke-linejoin="round"/></svg><div style="flex:1;font-size:13.5px;color:#3E4C5A;">{{ d.phone }}</div></div>
+      </div>
+      <div style="margin-top:14px;font-size:12px;font-weight:700;color:#111827;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Reparti e servizi</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;"><sc-for list="{{ d.specialties }}" as="sp" hint-placeholder-count="3"><span style="{{ sp.chip }}">{{ sp.label }}</span></sc-for></div>
+      <div style="margin-top:18px;display:flex;flex-direction:column;gap:9px;">
+        <a href="{{ d.nav }}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:52px;border-radius:13px;background:#0B5FA5;color:#fff;font-size:15.5px;font-weight:700;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 11l18-8-8 18-2-8-8-2z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/></svg> Apri navigazione</a>
+        <div style="display:flex;gap:9px;">
+          <a href="{{ d.telLink }}" style="flex:1;height:48px;display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px solid #CBD7E4;border-radius:12px;text-decoration:none;color:#0B5FA5;font-size:14px;font-weight:600;">Chiama struttura</a>
+          <button onClick="{{ goSummary }}" style="flex:1;height:48px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;color:#0B5FA5;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">Riepilogo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- SUMMARY -->
+  <sc-if value="{{ isSummary }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:18px 16px 26px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div><h2 style="margin:0;font-size:20px;font-weight:800;color:#111827;letter-spacing:-.01em;">Riepilogo per il medico</h2><div style="font-size:12px;color:#7B8795;margin-top:2px;">{{ summaryTime }}</div></div>
+      <div style="width:40px;height:40px;border-radius:10px;background:#EAF2FB;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 12h6m-6 4h6m-6-8h6M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z" stroke="#0B5FA5" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div style="margin-top:16px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;overflow:hidden;">
+      <sc-for list="{{ summaryRows }}" as="row" hint-placeholder-count="6">
+        <div style="display:flex;gap:12px;padding:12px 15px;border-bottom:1px solid rgba(0,0,0,.06);">
+          <div style="flex:0 0 116px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#94A0AD;font-weight:600;padding-top:2px;">{{ row.label }}</div>
+          <div style="flex:1;font-size:14px;color:#26323F;line-height:1.45;">{{ row.value }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:14px;background:#EAF2FB;border:1px solid #CFE0F2;border-radius:13px;padding:14px;">
+      <div style="font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#0B5FA5;font-weight:700;margin-bottom:5px;">Orientamento JetHealth</div>
+      <div style="font-size:14.5px;font-weight:700;color:#111827;">{{ summaryReco }}</div>
+      <p style="margin:7px 0 0;font-size:12.5px;color:#5A6A78;line-height:1.45;">Documento informativo generato dall'utente. Non costituisce diagnosi né referto medico.</p>
+    </div>
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:9px;">
+      <button onClick="{{ exportPdf }}" style="width:100%;height:52px;border:none;border-radius:13px;background:#0B5FA5;color:#fff;font-size:15.5px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Esporta PDF</button>
+      <div style="display:flex;gap:9px;">
+        <button onClick="{{ shareSummary }}" style="flex:1;height:48px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;color:#0B5FA5;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">Condividi</button>
+        <button onClick="{{ restart }}" style="flex:1;height:48px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;color:#0B5FA5;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">Nuova analisi</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  </div>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);background:#16202B;color:#fff;font-size:13px;font-weight:500;padding:11px 18px;border-radius:11px;box-shadow:0 8px 22px rgba(0,0,0,.28);z-index:40;white-space:nowrap;">{{ toast }}</div>
+  </sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:412,&quot;height&quot;:880},&quot;seedScenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Nessuno&quot;,&quot;Sintomi lievi&quot;,&quot;Sintomi gravi&quot;,&quot;Emergenza&quot;],&quot;default&quot;:&quot;Nessuno&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;largeText&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Accessibilità&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: 'home', lang: 'it', consent: false,
+    patient: 'adulto', freeText: '',
+    redflags: [], duration: null, pain: 0, fever: 'no', breath: 'no', factors: [],
+    result: null, selectedId: null, toast: null, stack: [], facContext: null,
+    clarifyQuestions: [], clarifyAnswers: {}, clarifyIntro: '', clarifyFallback: false, usingLlm: false,
+  };
+  DISCLAIMER = 'JetHealth non sostituisce il parere di un medico. In caso di emergenza o peggioramento rapido, chiama subito il 112/118.';
+
+  componentDidMount() {
+    const sc = this.props.seedScenario;
+    if (sc && sc !== 'Nessuno') this.seed(sc);
+  }
+
+  seed(sc) {
+    if (sc === 'Sintomi lievi') {
+      const d = { duration:'1-3 giorni', pain:3, fever:'lieve', breath:'no', factors:[], redflags:[] };
+      this.setState({ consent:true, freeText:'Mal di gola e naso chiuso da due giorni, leggera febbre.', ...d, result:this.classify(d), screen:'result' });
+    } else if (sc === 'Sintomi gravi') {
+      const d = { duration:'>3 giorni', pain:6, fever:'alta', breath:'lieve', factors:['patologie'], redflags:[] };
+      this.setState({ consent:true, freeText:'Febbre alta da 4 giorni e respiro affannoso.', ...d, result:this.classify(d), screen:'result' });
+    } else if (sc === 'Emergenza') {
+      const rf = ['Dolore al petto intenso o senso di oppressione','Difficoltà a respirare marcata'];
+      this.setState({ consent:true, freeText:'Dolore al petto e fiato corto improvviso.', redflags:rf, result:this.classify({redflags:rf}), screen:'emergency' });
+    }
+  }
+
+  // ---------- nav ----------
+  go(screen, extra) { this.setState(s => ({ stack:[...s.stack, s.screen], screen, ...(extra||{}) })); this.scrollTop(); }
+  scrollTop() { setTimeout(()=>{ const el=document.querySelector('.jh-scroll'); if(el) el.scrollTop=0; },0); }
+  back = () => { this.setState(s => { if (s.stack.length) { const st=[...s.stack]; const prev=st.pop(); return { stack:st, screen:prev }; } return { screen:'home' }; }); this.scrollTop(); };
+  setIt = () => this.setState({ lang:'it' });
+  setEn = () => this.setState({ lang:'en' });
+  flash(msg) { this.setState({ toast:msg }); clearTimeout(this._t); this._t=setTimeout(()=>this.setState({toast:null}),2200); }
+
+  // ---------- option styles ----------
+  segStyle(active) {
+    return active
+      ? 'flex:0 1 auto;padding:11px 14px;border-radius:11px;border:1.5px solid #0B5FA5;background:#0B5FA5;color:#fff;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center;'
+      : 'flex:0 1 auto;padding:11px 14px;border-radius:11px;border:1.5px solid #DCE3EC;background:#fff;color:#46535F;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center;';
+  }
+  chipStyle(active) {
+    return active
+      ? 'padding:9px 13px;border-radius:99px;border:1.5px solid #0B5FA5;background:#EAF2FB;color:#0B5FA5;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;'
+      : 'padding:9px 13px;border-radius:99px;border:1.5px solid #DCE3EC;background:#fff;color:#56636F;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;';
+  }
+  mkSeg(list, current, key) {
+    return list.map(o => ({ label:o.label!==undefined?o.label:o, style:this.segStyle(current===(o.value!==undefined?o.value:o)), onClick:()=>this.setState({[key]:(o.value!==undefined?o.value:o)}) }));
+  }
+
+  // ---------- triage ----------
+  classify(d) {
+    const rf = d.redflags || [];
+    const has = k => rf.some(x => x.toLowerCase().includes(k));
+    const neuro = has('parlare')||has('debolezza')||has('confus')||has('volto')||has('coscienza');
+    const cardiac = has('petto')||has('torac');
+    const breathRf = has('respirare');
+    const disclaimer = 'JetHealth non sostituisce il parere di un medico. In caso di emergenza o peggioramento rapido, chiama subito il 112/118.';
+    const p = this.state.patient;
+    const f = d.factors||[];
+
+    if (rf.length) {
+      const needs = [];
+      if (neuro) needs.push('Neurologia / Stroke Unit');
+      if (cardiac||breathRf) needs.push('Cardiologia / Emodinamica');
+      if (p==='bambino'||p==='neonato') needs.push('Pediatria');
+      if (f.includes('gravidanza')) needs.push('Ostetricia / Ginecologia');
+      if (has('trauma')) needs.push('Trauma center');
+      return { level:'emergency', levelLabel:'Emergenza', color:'#C8312B',
+        actionLabel:'Chiama subito il 112/118',
+        explanation:'I sintomi che hai indicato possono richiedere assistenza urgente. Ti consigliamo di chiamare subito il 112/118 o recarti al pronto soccorso. Qui sotto trovi le strutture più vicine e potenzialmente più adatte.',
+        nextSteps:[], watchFor:[], confidence:'alta', facilitySearchRequired:true, specialtyNeeds:needs, disclaimer };
+    }
+
+    let score = 0;
+    if (d.pain>=8) score+=3; else if (d.pain>=6) score+=2; else if (d.pain>=4) score+=1;
+    if (d.fever==='alta') score+=2; else if (d.fever==='media'||d.fever==='lieve') score+=1;
+    if (d.breath==='marcata') score+=4; else if (d.breath==='lieve') score+=2;
+    if (d.duration==='>1 settimana') score+=1;
+    if (f.includes('peggioramento')) score+=2;
+    if (f.includes('trauma')) score+=1;
+    if (f.includes('gravidanza')) score+=1;
+    if (f.includes('patologie')) score+=1;
+    if (p==='neonato') score+=2; else if (p==='bambino'||p==='anziano') score+=1;
+
+    const needs = [];
+    if (p==='bambino'||p==='neonato') needs.push('Pediatria');
+    if (f.includes('gravidanza')) needs.push('Ostetricia / Ginecologia');
+
+    if (score >= 6) {
+      return { level:'high', levelLabel:'Alta urgenza', color:'#D8552A',
+        actionLabel:'Valutazione medica urgente o pronto soccorso',
+        explanation:'I sintomi indicati richiedono una valutazione medica in tempi brevi. Ti consigliamo di rivolgerti al pronto soccorso o a un punto di primo intervento. Qui sotto trovi le strutture più adatte alla tua situazione.',
+        nextSteps:[
+          {n:1,text:'Non aspettare che i sintomi peggiorino: cerca assistenza oggi stesso.'},
+          {n:2,text:'Porta con te documento, tessera sanitaria ed eventuale lista dei farmaci.'},
+          {n:3,text:'Se sei solo e i sintomi peggiorano, chiama il 112/118.'},
+        ],
+        watchFor:['Dolore al petto o forte mancanza di fiato','Confusione, difficoltà a parlare o svenimento','Peggioramento rapido nel giro di poche ore'],
+        confidence:'media', facilitySearchRequired:true, specialtyNeeds:needs, disclaimer };
+    }
+    if (score >= 3) {
+      return { level:'medium', levelLabel:'Media urgenza', color:'#C58A1A',
+        actionLabel:'Contatta il medico di base o la continuità assistenziale',
+        explanation:'I sintomi non sembrano un\u2019emergenza immediata ma meritano attenzione medica. Ti consigliamo di contattare il medico di base, la continuità assistenziale (guardia medica) o un ambulatorio. Vai in pronto soccorso solo se i sintomi peggiorano.',
+        nextSteps:[
+          {n:1,text:'Contatta il medico di base; se non disponibile, la continuità assistenziale.'},
+          {n:2,text:'Annota orari, temperatura e andamento dei sintomi.'},
+          {n:3,text:'Riposo e idratazione; evita l\u2019automedicazione non necessaria.'},
+        ],
+        watchFor:['Difficoltà respiratorie o dolore al petto','Febbre molto alta che non scende','Confusione, svenimento o peggioramento rapido'],
+        confidence:'media', facilitySearchRequired:false, specialtyNeeds:needs, disclaimer };
+    }
+    return { level:'low', levelLabel:'Bassa urgenza', color:'#1E8A5B',
+      actionLabel:'Autocura guidata e monitoraggio',
+      explanation:'Dai sintomi indicati non emergono segnali di emergenza immediata. Al momento potrebbe non essere necessario andare in pronto soccorso. Ti consigliamo di monitorare i sintomi e contattare il medico di base o la continuità assistenziale se persistono o peggiorano.',
+      nextSteps:[
+        {n:1,text:'Monitora i sintomi e annota eventuali cambiamenti.'},
+        {n:2,text:'Riposo e idratazione; valuta la farmacia per consigli su sintomi lievi.'},
+        {n:3,text:'Contatta il medico di base se i sintomi durano oltre 2-3 giorni.'},
+      ],
+      watchFor:['Difficoltà a respirare o dolore al petto','Febbre alta persistente oltre 3 giorni','Confusione, svenimento o peggioramento rapido'],
+      confidence:'media', facilitySearchRequired:false, specialtyNeeds:needs, disclaimer };
+  }
+
+  // ---------- facilities data ----------
+  allFacilities() {
+    return [
+      { id:'umberto', name:'Policlinico Umberto I', address:'Viale del Policlinico 155, Roma', phone:'06 49971', type:'ps', specialties:['Generale','Neurologia / Stroke Unit','Trauma center'], dist:1.8, eta:9, waiting:24, waitMin:70, x:60, y:28 },
+      { id:'giovanni', name:'A.O. San Giovanni Addolorata', address:'Via dell\u2019Amba Aradam 9, Roma', phone:'06 77051', type:'ps', specialties:['Generale','Cardiologia / Emodinamica'], dist:2.6, eta:12, waiting:19, waitMin:55, x:54, y:76 },
+      { id:'camillo', name:'A.O. San Camillo-Forlanini', address:'Circonvallazione Gianicolense 87, Roma', phone:'06 58701', type:'ps', specialties:['Generale','Trauma center','Cardiologia / Emodinamica'], dist:4.2, eta:16, waiting:28, waitMin:80, x:24, y:60 },
+      { id:'gemelli', name:'Policlinico A. Gemelli', address:'Largo A. Gemelli 8, Roma', phone:'06 30151', type:'ps', specialties:['Generale','Cardiologia / Emodinamica','Ostetricia / Ginecologia'], dist:6.4, eta:22, waiting:31, waitMin:95, x:30, y:14 },
+      { id:'bambino', name:'Ospedale Pediatrico Bambino Gesù', address:'Piazza Sant\u2019Onofrio 4, Roma', phone:'06 68591', type:'pediatrico', specialties:['Pediatria','Pronto soccorso pediatrico'], dist:3.1, eta:14, waiting:12, waitMin:40, x:34, y:46 },
+      { id:'torvergata', name:'Policlinico Tor Vergata', address:'Viale Oxford 81, Roma', phone:'06 20901', type:'ps', specialties:['Generale','Neurologia / Stroke Unit','Ostetricia / Ginecologia'], dist:11.5, eta:28, waiting:14, waitMin:50, x:84, y:70 },
+      { id:'filippo', name:'Ospedale San Filippo Neri', address:'Via Martinotti 20, Roma', phone:'06 33061', type:'ps', specialties:['Generale','Cardiologia / Emodinamica','Neurologia / Stroke Unit'], dist:8.2, eta:24, waiting:17, waitMin:60, x:16, y:24 },
+      { id:'pertini', name:'Ospedale Sandro Pertini', address:'Via dei Monti Tiburtini 385, Roma', phone:'06 41431', type:'ps', specialties:['Generale'], dist:5.0, eta:18, waiting:22, waitMin:65, x:80, y:34 },
+    ];
+  }
+
+  rankFacilities(needs, level) {
+    const needPed = (needs||[]).includes('Pediatria');
+    let list = this.allFacilities().filter(f => {
+      if (f.type==='pediatrico') return needPed;
+      return true;
+    });
+    const wClin = level==='emergency'?0.55:0.4;
+    const wDist = level==='emergency'?0.30:0.30;
+    const wWait = level==='emergency'?0.15:0.30;
+    const scored = list.map(f => {
+      const distScore = 1 - Math.min(f.dist/15, 1);
+      const waitScore = 1 - Math.min(f.waitMin/120, 1);
+      let match = 0, matched = null;
+      (needs||[]).forEach(n => { if (f.specialties.includes(n)) { match++; matched = n; } });
+      if (f.type==='pediatrico' && needPed) { match++; matched = 'Pronto soccorso pediatrico'; }
+      const clin = (needs && needs.length) ? (match>0 ? 0.55 + 0.45*(match/needs.length) : 0.35) : 0.6;
+      const total = wClin*clin + wDist*distScore + wWait*waitScore;
+      return { ...f, _score: total, _match: matched };
+    });
+    scored.sort((a,b) => b._score - a._score);
+    const max = scored[0] ? scored[0]._score : 1;
+    const min = scored[scored.length-1] ? scored[scored.length-1]._score : 0;
+    return scored.map((f,i) => ({ ...f, rank:i+1, recommendation: Math.round(60 + 38*((f._score-min)/((max-min)||1))) }));
+  }
+
+  // ---------- handlers ----------
+  startTriage = () => this.go('consent');
+  goFacilitiesGeneric = () => this.go('facilities', { facContext:'generic' });
+  toggleConsent = () => this.setState(s => ({ consent: !s.consent }));
+  consentContinue = () => { if (!this.state.consent) { this.flash('Serve il consenso per continuare'); return; } this.go('intake'); };
+  setText = (e) => this.setState({ freeText: e.target.value });
+  setPain = (e) => this.setState({ pain: parseInt(e.target.value,10) });
+  redflagContinue = () => {};
+  goEmergency = () => this.go('emergency', { result:this.emergencyResult() });
+
+  // ---- intake -> LLM flow ----
+  intakeContinue = async () => {
+    const text = (this.state.freeText||'').trim();
+    if (this.detectEmergencyText(text)) { this.go('emergency', { result:this.emergencyResult() }); return; }
+    this.go('thinking');
+    await this.generateQuestions();
+  };
+
+  questionPrompt() {
+    const p = { adulto:'adulto', bambino:'bambino', neonato:'neonato', anziano:'persona anziana' }[this.state.patient] || 'adulto';
+    return 'Sei un assistente di triage sanitario PRUDENTE per la Regione Lazio (Italia). Non fai diagnosi. '
+      + 'Paziente: ' + p + '. Descrizione sintomi dell\'utente: "' + (this.state.freeText||'').replace(/"/g,'\'') + '". '
+      + 'Compito: (1) se la descrizione contiene segni di EMERGENZA immediata (dolore toracico intenso, grave difficolta respiratoria, perdita di coscienza, segni di ictus, emorragia grave, convulsioni, reazione allergica grave) imposta immediateEmergency=true. '
+      + '(2) Genera da 3 a 4 domande di approfondimento in ITALIANO, ciascuna con 3-6 opzioni brevi selezionabili, utili a stabilire il livello di urgenza; includi sempre una domanda di sicurezza sui segnali d\'allarme presenti ora. '
+      + 'Rispondi SOLO con JSON valido, nessun testo extra: '
+      + '{"immediateEmergency":false,"intro":"frase empatica breve in italiano","questions":[{"id":"durata","text":"...","hint":"","multi":false,"options":["..."]}]}';
+  }
+
+  finalPrompt() {
+    const qa = (this.state.clarifyQuestions||[]).map(q => {
+      const a = (this.state.clarifyAnswers[q.id]||[]);
+      return '- ' + q.text + ' => ' + (a.length ? a.join(', ') : 'nessuna risposta');
+    }).join('\n');
+    const p = { adulto:'adulto', bambino:'bambino', neonato:'neonato', anziano:'persona anziana' }[this.state.patient] || 'adulto';
+    return 'Sei un assistente di triage sanitario PRUDENTE per la Regione Lazio. Non fai diagnosi definitive; in caso di dubbio scegli l\'opzione piu sicura. '
+      + 'Paziente: ' + p + '. Descrizione: "' + (this.state.freeText||'').replace(/"/g,'\'') + '". Risposte di approfondimento:\n' + qa + '\n\n'
+      + 'Fornisci un orientamento di triage. specialtyNeeds SOLO tra: ["Generale","Neurologia / Stroke Unit","Cardiologia / Emodinamica","Pediatria","Ostetricia / Ginecologia","Trauma center"]. '
+      + 'Spiegazione semplice e rassicurante (2-3 frasi), prudente, in italiano. Includi sempre nextSteps e watchFor. '
+      + 'Rispondi SOLO con JSON valido: {"urgencyLevel":"low|medium|high|emergency","actionLabel":"breve in italiano","explanation":"...","nextSteps":["..."],"watchFor":["..."],"facilitySearchRequired":true,"specialtyNeeds":["..."],"confidence":"bassa|media|alta"}';
+  }
+
+  parseJson(raw) {
+    if (!raw || typeof raw !== 'string') return null;
+    let t = raw.trim().replace(/^```(json)?/i,'').replace(/```$/,'').trim();
+    const a = t.indexOf('{'), b = t.lastIndexOf('}');
+    if (a<0 || b<0) return null;
+    try { return JSON.parse(t.slice(a, b+1)); } catch(e) { return null; }
+  }
+
+  generateQuestions = async () => {
+    let qs=null, intro='', fallback=false, immediate=false;
+    try {
+      if (window.claude && window.claude.complete) {
+        const raw = await window.claude.complete({ messages:[{ role:'user', content:this.questionPrompt() }] });
+        const j = this.parseJson(raw);
+        if (j && Array.isArray(j.questions)) { immediate=!!j.immediateEmergency; intro=j.intro||''; qs=j.questions; }
+        else fallback=true;
+      } else { fallback=true; }
+    } catch(e) { fallback=true; }
+    if (immediate) { this.setState({ usingLlm:true }); this.go('emergency', { result:this.emergencyResult() }); return; }
+    if (!qs || !qs.length) { qs = this.defaultQuestions(); fallback = true; }
+    qs = qs.slice(0,5).map((q,i) => ({ id:(q.id||('q'+i)), text:q.text||'', hint:q.hint||'', multi:q.multi!==false, options:(q.options||[]).slice(0,6).map(String) }));
+    this.setState({ clarifyQuestions:qs, clarifyAnswers:{}, clarifyFallback:fallback, usingLlm:!fallback,
+      clarifyIntro: intro || (fallback ? 'Per orientarti al meglio, rispondi a queste domande di sicurezza.' : 'Ho letto la tua descrizione. Qualche domanda per orientarti meglio.'),
+      screen:'clarify' });
+    this.scrollTop();
+  };
+
+  toggleClarify(qid, val, multi) {
+    this.setState(s => {
+      const cur = s.clarifyAnswers[qid] || [];
+      let next;
+      if (multi) next = cur.includes(val) ? cur.filter(x=>x!==val) : [...cur, val];
+      else next = cur.includes(val) ? [] : [val];
+      return { clarifyAnswers: { ...s.clarifyAnswers, [qid]: next } };
+    });
+  }
+
+  defaultQuestions() {
+    return [
+      { id:'segnali', text:'È presente ORA uno di questi segnali?', hint:'Seleziona tutti quelli presenti', multi:true, options:['Dolore al petto intenso','Difficoltà a respirare marcata','Perdita di coscienza','Difficoltà a parlare o debolezza improvvisa','Emorragia importante','Nessuno di questi'] },
+      { id:'durata', text:'Da quanto tempo hai questi sintomi?', multi:false, options:['Oggi','1-3 giorni','Più di 3 giorni','Più di una settimana'] },
+      { id:'intensita', text:'Quanto è intenso il malessere?', multi:false, options:['Lieve','Moderato','Forte','Insopportabile'] },
+      { id:'febbre', text:'Hai febbre?', multi:false, options:['No','Fino a 38°','38-39°','Oltre 39°'] },
+      { id:'extra', text:'Si applica qualcosa di questo?', hint:'Facoltativo', multi:true, options:['Respiro affannato','Sto peggiorando in fretta','Ho patologie croniche','Sono in gravidanza','Trauma recente','Nessuno'] },
+    ];
+  }
+
+  analyze = async () => {
+    this.go('analyzing');
+    const force = this.detectEmergency();
+    let result = null;
+    const started = Date.now();
+    try {
+      if (this.state.usingLlm && window.claude && window.claude.complete && !force) {
+        const raw = await window.claude.complete({ messages:[{ role:'user', content:this.finalPrompt() }] });
+        const j = this.parseJson(raw);
+        result = j ? this.normalizeResult(j) : this.localResult();
+      } else {
+        result = force ? this.emergencyResult() : this.localResult();
+      }
+    } catch(e) { result = force ? this.emergencyResult() : this.localResult(); }
+    if (force) result = this.emergencyResult();
+    const wait = Math.max(0, 1100 - (Date.now()-started));
+    setTimeout(() => {
+      this.setState({ result, screen: result.level==='emergency' ? 'emergency' : 'result' });
+      this.scrollTop();
+    }, wait);
+  };
+
+  deriveNeeds() {
+    const blob = ((this.state.freeText||'') + ' ' + Object.values(this.state.clarifyAnswers||{}).flat().join(' ')).toLowerCase();
+    const needs = [];
+    if (/petto|torac|cuore|cardiac|infarto/.test(blob)) needs.push('Cardiologia / Emodinamica');
+    if (/parlare|debolezza|ictus|coscienza|confus|volto|neurolog|formicol/.test(blob)) needs.push('Neurologia / Stroke Unit');
+    if (/trauma|caduta|incidente|frattur/.test(blob)) needs.push('Trauma center');
+    if (this.state.patient==='bambino' || this.state.patient==='neonato') needs.push('Pediatria');
+    if (/gravidanz|incinta/.test(blob)) needs.push('Ostetricia / Ginecologia');
+    return needs;
+  }
+
+  detectEmergencyText(text) {
+    const b = (text||'').toLowerCase();
+    return [/dolore al petto/,/oppressione al petto/,/non riesc\w* a respir/,/non respiro/,/senza fiato/,/perdit\w* di conoscenza/,/svenut|svenimento|perso i sensi/,/ictus/,/non riesc\w* a parlare/,/volto storto|bocca storta/,/emorragia/,/sangue che non si ferma/,/convulsion/,/allergica grave|anafilatt/,/labbra blu|cianos/].some(re => re.test(b));
+  }
+  detectEmergencyAnswers() {
+    const sel = Object.values(this.state.clarifyAnswers||{}).flat();
+    return sel.some(v => { const x=(v||'').toLowerCase(); if (x.indexOf('nessun')===0) return false; return /petto|respirare marcat|marcata|coscienza|parlare|debolezza improvvis|emorragia|convuls|allergica grave|svenimento/.test(x); });
+  }
+  detectEmergency() { return this.detectEmergencyText(this.state.freeText) || this.detectEmergencyAnswers(); }
+
+  emergencyResult() { return this.resultByLevel('emergency', this.deriveNeeds()); }
+
+  localResult() {
+    if (this.detectEmergency()) return this.emergencyResult();
+    const blob = ((this.state.freeText||'') + ' ' + Object.values(this.state.clarifyAnswers||{}).flat().join(' ')).toLowerCase();
+    let score = 0;
+    if (/insopportabil|fortissim/.test(blob)) score+=3; else if (/\bforte\b/.test(blob)) score+=2; else if (/moderat/.test(blob)) score+=1;
+    if (/oltre 39|>\s*39|39°|febbre alta/.test(blob)) score+=2; else if (/38/.test(blob)) score+=1;
+    if (/affann|fatica a respir|respiro corto|fiato corto/.test(blob)) score+=2;
+    if (/peggior/.test(blob)) score+=2;
+    if (/patolog|cronic/.test(blob)) score+=1;
+    if (/settiman|più di 3|piu di 3|oltre 3/.test(blob)) score+=1;
+    if (this.state.patient==='neonato') score+=2; else if (this.state.patient==='bambino'||this.state.patient==='anziano') score+=1;
+    const level = score>=6 ? 'high' : score>=3 ? 'medium' : 'low';
+    return this.resultByLevel(level, this.deriveNeeds());
+  }
+
+  normalizeResult(j) {
+    let lvl = (j.urgencyLevel||'low').toLowerCase();
+    if (!['low','medium','high','emergency'].includes(lvl)) lvl='medium';
+    const needs = Array.isArray(j.specialtyNeeds) && j.specialtyNeeds.length ? j.specialtyNeeds : this.deriveNeeds();
+    const base = this.resultByLevel(lvl, needs);
+    if (j.actionLabel) base.actionLabel = String(j.actionLabel);
+    if (j.explanation) base.explanation = String(j.explanation);
+    if (Array.isArray(j.nextSteps) && j.nextSteps.length) base.nextSteps = j.nextSteps.slice(0,4).map((t,i)=>({n:i+1,text:String(t)}));
+    if (Array.isArray(j.watchFor) && j.watchFor.length) base.watchFor = j.watchFor.slice(0,5).map(String);
+    if (j.confidence) base.confidence = String(j.confidence).toLowerCase();
+    if (j.facilitySearchRequired===true) base.facilitySearchRequired = true;
+    return base;
+  }
+
+  resultByLevel(level, needs) {
+    const D = this.DISCLAIMER;
+    needs = needs || [];
+    if (level==='emergency') return { level:'emergency', levelLabel:'Emergenza', color:'#C8312B', actionLabel:'Chiama subito il 112/118',
+      explanation:'I sintomi che hai indicato possono richiedere assistenza urgente. Ti consigliamo di chiamare subito il 112/118 o recarti al pronto soccorso. Qui sotto trovi le strutture più vicine e potenzialmente più adatte.',
+      nextSteps:[], watchFor:[], confidence:'alta', facilitySearchRequired:true, specialtyNeeds:needs, disclaimer:D };
+    if (level==='high') return { level:'high', levelLabel:'Alta urgenza', color:'#D8552A', actionLabel:'Valutazione medica urgente o pronto soccorso',
+      explanation:'I sintomi indicati richiedono una valutazione medica in tempi brevi. Ti consigliamo di rivolgerti al pronto soccorso o a un punto di primo intervento. Qui sotto trovi le strutture più adatte alla tua situazione.',
+      nextSteps:[{n:1,text:'Non aspettare che i sintomi peggiorino: cerca assistenza oggi stesso.'},{n:2,text:'Porta documento, tessera sanitaria ed eventuale lista dei farmaci.'},{n:3,text:'Se sei solo e i sintomi peggiorano, chiama il 112/118.'}],
+      watchFor:['Dolore al petto o forte mancanza di fiato','Confusione, difficoltà a parlare o svenimento','Peggioramento rapido nel giro di poche ore'],
+      confidence:'media', facilitySearchRequired:true, specialtyNeeds:needs, disclaimer:D };
+    if (level==='medium') return { level:'medium', levelLabel:'Media urgenza', color:'#C58A1A', actionLabel:'Contatta il medico di base o la continuità assistenziale',
+      explanation:'I sintomi non sembrano un\u2019emergenza immediata ma meritano attenzione medica. Ti consigliamo di contattare il medico di base, la continuità assistenziale (guardia medica) o un ambulatorio. Vai in pronto soccorso solo se i sintomi peggiorano.',
+      nextSteps:[{n:1,text:'Contatta il medico di base; se non disponibile, la continuità assistenziale.'},{n:2,text:'Annota orari, temperatura e andamento dei sintomi.'},{n:3,text:'Riposo e idratazione; evita l\u2019automedicazione non necessaria.'}],
+      watchFor:['Difficoltà respiratorie o dolore al petto','Febbre molto alta che non scende','Confusione, svenimento o peggioramento rapido'],
+      confidence:'media', facilitySearchRequired:false, specialtyNeeds:needs, disclaimer:D };
+    return { level:'low', levelLabel:'Bassa urgenza', color:'#1E8A5B', actionLabel:'Autocura guidata e monitoraggio',
+      explanation:'Dai sintomi indicati non emergono segnali di emergenza immediata. Al momento potrebbe non essere necessario andare in pronto soccorso. Ti consigliamo di monitorare i sintomi e contattare il medico di base o la continuità assistenziale se persistono o peggiorano.',
+      nextSteps:[{n:1,text:'Monitora i sintomi e annota eventuali cambiamenti.'},{n:2,text:'Riposo e idratazione; valuta la farmacia per consigli su sintomi lievi.'},{n:3,text:'Contatta il medico di base se i sintomi durano oltre 2-3 giorni.'}],
+      watchFor:['Difficoltà a respirare o dolore al petto','Febbre alta persistente oltre 3 giorni','Confusione, svenimento o peggioramento rapido'],
+      confidence:'media', facilitySearchRequired:false, specialtyNeeds:needs, disclaimer:D };
+  }
+  goFacilities = () => this.go('facilities', { facContext:'triage' });
+  goEmergencyFacilities = () => this.go('facilities', { facContext:'triage' });
+  selectFacility = (id) => this.go('detail', { selectedId:id });
+  goSummary = () => this.go('summary');
+  saveSummary = () => this.flash('Riepilogo salvato sul dispositivo');
+  shareSummary = () => this.flash('Link di condivisione copiato');
+  exportPdf = () => this.flash('PDF generato');
+  restart = () => this.setState({ screen:'home', stack:[], redflags:[], duration:null, pain:0, fever:'no', breath:'no', factors:[], result:null, selectedId:null, freeText:'', facContext:null, clarifyQuestions:[], clarifyAnswers:{}, clarifyIntro:'', clarifyFallback:false, usingLlm:false });
+
+  toggleRedflag(label) {
+    this.setState(s => {
+      const has = s.redflags.includes(label);
+      return { redflags: has ? s.redflags.filter(x=>x!==label) : [...s.redflags, label] };
+    });
+  }
+  toggleFactor(v) {
+    this.setState(s => {
+      const has = s.factors.includes(v);
+      return { factors: has ? s.factors.filter(x=>x!==v) : [...s.factors, v] };
+    });
+  }
+
+  i18n() {
+    const it = {
+      homeKicker:'Orientamento sanitario · Regione Lazio',
+      heroTitle:'Capisci dove andare, prima di andare in pronto soccorso.',
+      heroSub:'Descrivi i sintomi: JetHealth valuta l\u2019urgenza e ti indica il percorso più adatto, dal medico di base al pronto soccorso.',
+      ctaPrimary:'Analizza i miei sintomi',
+      ctaSecondary:'Trova pronto soccorso vicino',
+      howItWorks:'Come funziona',
+      disclaimer:'JetHealth non sostituisce il parere di un medico. In caso di emergenza o peggioramento rapido, chiama subito il 112/118.',
+    };
+    const en = {
+      homeKicker:'Health navigation · Lazio Region',
+      heroTitle:'Know where to go, before heading to the ER.',
+      heroSub:'Describe your symptoms: JetHealth assesses urgency and points you to the right care, from your GP to the emergency room.',
+      ctaPrimary:'Check my symptoms',
+      ctaSecondary:'Find nearest emergency room',
+      howItWorks:'How it works',
+      disclaimer:'JetHealth does not replace a doctor. In an emergency or if you get rapidly worse, call 112/118 immediately.',
+    };
+    return this.state.lang==='en' ? en : it;
+  }
+
+  pillStyle(active, light) {
+    if (light) return active
+      ? 'padding:5px 10px;border-radius:8px;border:none;background:#fff;color:#0B5FA5;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;'
+      : 'padding:5px 10px;border-radius:8px;border:none;background:rgba(255,255,255,.18);color:#fff;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;';
+    return active
+      ? 'padding:5px 9px;border-radius:8px;border:none;background:#0B5FA5;color:#fff;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;'
+      : 'padding:5px 9px;border-radius:8px;border:none;background:#F2F5F9;color:#7B8795;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;';
+  }
+
+  typeMeta(type) {
+    if (type==='pediatrico') return { label:'PS Pediatrico', chip:'font-size:11px;font-weight:600;color:#1E8A5B;background:#E7F4EE;padding:3px 9px;border-radius:7px;' };
+    if (type==='territorio') return { label:'Territorio', chip:'font-size:11px;font-weight:600;color:#0B5FA5;background:#EAF2FB;padding:3px 9px;border-radius:7px;' };
+    return { label:'Pronto Soccorso', chip:'font-size:11px;font-weight:600;color:#C58A1A;background:#FBF3E0;padding:3px 9px;border-radius:7px;' };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const t = this.i18n();
+    const screen = s.screen;
+    const isHome = screen==='home';
+    const titles = {
+      consent:['Privacy','Consenso'], intake:['Passo 1 di 3','I tuoi sintomi'],
+      thinking:['Analisi','Lettura sintomi'], clarify:['Passo 2 di 3','Approfondimento'],
+      analyzing:['Passo 3 di 3','Analisi finale'], result:['Esito','Orientamento'],
+      emergency:['Emergenza','Azione immediata'], facilities:['Strutture','Salute Lazio'],
+      detail:['Struttura','Dettaglio'], summary:['Documento','Riepilogo'],
+    };
+    const ht = titles[screen] || ['',''];
+    const progMap = { intake:33, thinking:45, clarify:66, analyzing:88, result:100 };
+    const prog = progMap[screen];
+
+    // clarify (LLM-generated) questions for template
+    const clarifyQuestions = (s.clarifyQuestions||[]).map(q => ({
+      text:q.text, hint:q.hint,
+      cardStyle:'background:#fff;border:1px solid #E6EAF1;border-radius:14px;padding:15px;margin-bottom:12px;',
+      options: (q.options||[]).map(opt => {
+        const sel = (s.clarifyAnswers[q.id]||[]).includes(opt);
+        const style = sel
+          ? 'display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid #0B5FA5;background:#EAF2FB;color:#0B5FA5;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;text-align:left;letter-spacing:-.01em;'
+          : 'display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:11px;border:1px solid rgba(0,0,0,.09);background:#fff;color:#374151;font-size:14px;font-weight:400;font-family:inherit;cursor:pointer;text-align:left;letter-spacing:-.01em;';
+        return { label:opt, style, onClick:()=>this.toggleClarify(q.id, opt, q.multi) };
+      }),
+    }));
+
+    // patient options
+    const patientList = [{label:'Adulto',value:'adulto'},{label:'Bambino',value:'bambino'},{label:'Neonato',value:'neonato'},{label:'Anziano',value:'anziano'}];
+    const patientOpts = patientList.map(o => ({ label:o.label, style:this.segStyle(s.patient===o.value), onClick:()=>this.setState({patient:o.value}) }));
+
+    const examplesData = [
+      { icon:'🤒', text:'Ho febbre a 38,5, mal di gola e tosse da due giorni' },
+      { icon:'🫁', text:'Ho dolore al petto e difficoltà a respirare' },
+      { icon:'🤢', text:'Mio figlio ha vomito e diarrea da stamattina' },
+    ];
+    const examples = examplesData.map(e => ({ icon:e.icon, text:e.text, onClick:()=>this.setState({freeText:e.text}) }));
+
+    // redflags
+    const redflagLabels = [
+      'Dolore al petto intenso o senso di oppressione',
+      'Difficoltà a respirare marcata',
+      'Perdita di coscienza o svenimento',
+      'Difficoltà a parlare, debolezza improvvisa o volto asimmetrico',
+      'Trauma importante o emorragia che non si ferma',
+      'Reazione allergica grave, convulsioni o confusione improvvisa',
+    ];
+    const redflagOpts = redflagLabels.map(label => {
+      const active = s.redflags.includes(label);
+      return {
+        label, active,
+        onClick: () => this.toggleRedflag(label),
+        style: active
+          ? 'display:flex;align-items:center;gap:11px;width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #C8312B;background:#FBEEEC;cursor:pointer;font-family:inherit;'
+          : 'display:flex;align-items:center;gap:11px;width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #E3E8EF;background:#fff;cursor:pointer;font-family:inherit;',
+        boxStyle: active
+          ? 'flex:0 0 auto;width:22px;height:22px;border-radius:6px;background:#C8312B;border:1.5px solid #C8312B;display:flex;align-items:center;justify-content:center;'
+          : 'flex:0 0 auto;width:22px;height:22px;border-radius:6px;background:#fff;border:1.5px solid #C3CCD7;display:flex;align-items:center;justify-content:center;',
+      };
+    });
+    const hasRedflag = s.redflags.length>0;
+
+    // details
+    const durationOpts = this.mkSeg([{label:'Oggi',value:'oggi'},{label:'1-3 giorni',value:'1-3 giorni'},{label:'>3 giorni',value:'>3 giorni'},{label:'>1 settimana',value:'>1 settimana'}], s.duration, 'duration');
+    const feverOpts = this.mkSeg([{label:'No',value:'no'},{label:'Fino a 38°',value:'lieve'},{label:'38-39°',value:'media'},{label:'Oltre 39°',value:'alta'}], s.fever, 'fever');
+    const breathOpts = this.mkSeg([{label:'No',value:'no'},{label:'Lieve',value:'lieve'},{label:'Marcata',value:'marcata'}], s.breath, 'breath');
+    const factorList = [{label:'Peggioramento',value:'peggioramento'},{label:'Trauma recente',value:'trauma'},{label:'Gravidanza',value:'gravidanza'},{label:'Patologie note',value:'patologie'},{label:'Farmaci abituali',value:'farmaci'}];
+    const factorOpts = factorList.map(o => ({ label:o.label, style:this.chipStyle(s.factors.includes(o.value)), onClick:()=>this.toggleFactor(o.value) }));
+    const painLabels = ['Nessun dolore','Molto lieve','Lieve','Lieve','Moderato','Moderato','Marcato','Marcato','Forte','Molto forte','Insopportabile'];
+    const painLabel = (s.pain||0) + ' · ' + painLabels[s.pain||0];
+    const painColor = s.pain>=7 ? '#C8312B' : s.pain>=4 ? '#C58A1A' : '#1E8A5B';
+
+    // result theming
+    const r = s.result;
+    let resultBannerStyle='', actionCardStyle='', resultIconWrap='', resultIcon='', confidenceStyle='';
+    let hasAlternatives=false, alternatives=[];
+    if (r) {
+      const bg = { low:'#1E8A5B', medium:'#C58A1A', high:'#D8552A', emergency:'#C8312B' }[r.level];
+      const soft = { low:'#E7F4EE', medium:'#FBF3E0', high:'#FBEDE4', emergency:'#FBE9E7' }[r.level];
+      resultBannerStyle = 'background:'+bg+';color:#fff;padding:22px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;';
+      resultIconWrap = 'flex:0 0 auto;width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;';
+      const iconAttrs = { width:24, height:24, viewBox:'0 0 24 24', fill:'none', stroke:'#fff', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round' };
+      const icons = {
+        low: React.createElement('svg',iconAttrs, React.createElement('path',{d:'M20 6L9 17l-5-5'})),
+        medium: React.createElement('svg',iconAttrs, React.createElement('circle',{cx:12,cy:12,r:9}), React.createElement('path',{d:'M12 8v4l2.5 2.5'})),
+        high: React.createElement('svg',iconAttrs, React.createElement('path',{d:'M12 9v4m0 4h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z'})),
+        emergency: React.createElement('svg',{...iconAttrs,fill:'rgba(255,255,255,.25)'}, React.createElement('path',{d:'M12 9v4m0 4h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z',stroke:'#fff',strokeWidth:2})),
+      };
+      resultIcon = icons[r.level] || icons.low;
+      confidenceStyle = 'font-size:11px;font-weight:500;letter-spacing:.04em;background:rgba(255,255,255,.18);padding:6px 11px;border-radius:99px;white-space:nowrap;';
+      actionCardStyle = 'background:'+soft+';border:1px solid '+bg+'33;border-radius:14px;padding:15px;';
+      if (r.level==='low' || r.level==='medium') {
+        hasAlternatives = true;
+        alternatives = [
+          { icon:'🩺', title:'Medico di base', body:'Per valutazione e prescrizioni', phone:false },
+          { icon:'☎️', title:'Continuità assistenziale', body:'Guardia medica · notti e festivi', phone:true, tel:'tel:06570600' },
+          { icon:'💊', title:'Farmacia', body:'Consigli su sintomi lievi', phone:false },
+          { icon:'💻', title:'Teleconsulto regionale', body:'Parla con un medico online', phone:false },
+        ];
+        if (r.level==='medium') alternatives.push({ icon:'🏥', title:'Ambulatorio / Casa della Comunità', body:'Cure territoriali senza PS', phone:false });
+      }
+    }
+
+    // facilities ranked
+    let facilities=[], facCount=0, facListTitle='', facBannerOn=false, facBannerText='', facBannerStyle='';
+    const needs = (r && r.specialtyNeeds) || [];
+    const level = (r && r.level) || 'high';
+    if (screen==='facilities' || screen==='detail') {
+      const ranked = this.rankFacilities(needs, level);
+      facCount = ranked.length;
+      facListTitle = level==='emergency' ? 'Pronto soccorso consigliati' : 'Strutture consigliate';
+      facilities = ranked.map(f => {
+        const meta = this.typeMeta(f.type);
+        const waitColor = f.waitMin>=80 ? '#C8312B' : f.waitMin>=55 ? '#C58A1A' : '#1E8A5B';
+        const pinBg = f.rank===1 ? '#0B5FA5' : f.rank<=3 ? '#3E7FBE' : '#8AA4BE';
+        return {
+          id:f.id, name:f.name, address:f.address, distance:f.dist, eta:f.eta, waitMin:f.waitMin, waiting:f.waiting,
+          waitColor, pinRank:f.rank, topPick:f.rank===1, typeLabel:meta.label, typeChip:meta.chip,
+          matchTag: f._match || null,
+          select: () => this.selectFacility(f.id),
+          cardStyle: f.rank===1
+            ? 'width:100%;text-align:left;padding:14px;border-radius:14px;border:1.5px solid #0B5FA5;background:#fff;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(11,95,165,.1);'
+            : 'width:100%;text-align:left;padding:14px;border-radius:14px;border:1px solid #E6EAF1;background:#fff;cursor:pointer;font-family:inherit;',
+          rankBadge: 'flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:'+pinBg+';color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;',
+          pinStyle: 'position:absolute;left:'+f.x+'%;top:'+f.y+'%;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50% 50% 50% 0;background:'+pinBg+';color:#fff;font-size:11px;font-weight:700;border:2px solid #fff;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-family:inherit;',
+        };
+      });
+      if (level==='emergency') { facBannerOn=true; facBannerText='In emergenza chiama sempre il 112/118 mentre raggiungi la struttura'; facBannerStyle='background:#C8312B;color:#fff;font-size:12.5px;font-weight:600;text-align:center;padding:9px 14px;'; }
+      else if (s.facContext==='generic') { facBannerOn=true; facBannerText='Stai cercando senza analisi sintomi. Per un consiglio personalizzato, analizza prima i sintomi.'; facBannerStyle='background:#EAF2FB;color:#0B5FA5;font-size:12px;font-weight:500;text-align:center;padding:9px 14px;'; }
+    }
+
+    // detail
+    let d=null;
+    if (screen==='detail' && s.selectedId) {
+      const f = facilities.find(x=>x.id===s.selectedId) || this.rankFacilities(needs, level).map(x=>({...x})).find(x=>x.id===s.selectedId);
+      const raw = this.allFacilities().find(x=>x.id===s.selectedId);
+      if (raw) {
+        const meta = this.typeMeta(raw.type);
+        const waitColor = raw.waitMin>=80 ? '#C8312B' : raw.waitMin>=55 ? '#C58A1A' : '#1E8A5B';
+        const top = facilities.find(x=>x.id===raw.id);
+        d = {
+          name:raw.name, address:raw.address, phone:raw.phone, typeLabel:meta.label,
+          distance:raw.dist, waitMin:raw.waitMin, waiting:raw.waiting, waitColor,
+          topPick: top ? top.topPick : false, emerg: level==='emergency',
+          telLink:'tel:'+raw.phone.replace(/\s/g,''),
+          nav:'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(raw.name+' '+raw.address),
+          specialties: raw.specialties.map(sp => ({ label:sp, chip:'font-size:12px;font-weight:600;color:#3E4C5A;background:#F2F5F9;border:1px solid #E3E8EF;padding:6px 11px;border-radius:8px;' })),
+        };
+      }
+    }
+
+    // summary
+    const now = new Date();
+    const summaryTime = now.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) + ' · ' + now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+    const patLabel = {adulto:'Adulto',bambino:'Bambino',neonato:'Neonato',anziano:'Anziano'}[s.patient];
+    const clarPairs = (s.clarifyQuestions||[]).map(q => { const a=(s.clarifyAnswers[q.id]||[]); return a.length ? { label:q.text, value:a.join(', ') } : null; }).filter(Boolean);
+    const summaryRows = [
+      { label:'Paziente', value:patLabel },
+      { label:'Sintomi', value: s.freeText || 'Non specificati a testo libero' },
+      ...clarPairs,
+      { label:'Valutazione', value: r ? r.levelLabel : 'Non effettuata' },
+      { label:'Affidabilità', value: r ? r.confidence : '—' },
+      { label:'Metodo', value: s.usingLlm ? 'Assistente clinico AI + regole di sicurezza' : 'Regole di sicurezza locali' },
+    ];
+    const summaryReco = r ? (r.levelLabel + ' — ' + r.actionLabel) : 'Analisi non ancora effettuata';
+
+    return {
+      rootStyle: 'width:430px;max-width:100%;height:880px;max-height:94vh;background:#F7F9FB;border-radius:32px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 32px 80px rgba(14,24,40,.18);position:relative;'+(this.props.largeText?'font-size:17px;':''),
+      t,
+      showHeader: !isHome,
+      showProgress: prog!==undefined,
+      progressStyle: 'height:100%;background:#0B5FA5;width:'+(prog||0)+'%;transition:width .35s ease;',
+      headerKicker: ht[0], headerTitle: ht[1],
+      enNotice: s.lang==='en' && !isHome,
+      itPillStyle: this.pillStyle(s.lang==='it',false), enPillStyle: this.pillStyle(s.lang==='en',false),
+      itPillStyleLight: this.pillStyle(s.lang==='it',true), enPillStyleLight: this.pillStyle(s.lang==='en',true),
+      setIt:this.setIt, setEn:this.setEn, back:this.back,
+
+      isHome, isConsent:screen==='consent', isIntake:screen==='intake', isRedflag:screen==='redflag',
+      isThinking:screen==='thinking', isClarify:screen==='clarify',
+      clarifyQuestions, clarifyIntro:s.clarifyIntro, clarifyFallback:s.clarifyFallback,
+      isDetails:screen==='details', isAnalyzing:screen==='analyzing', isResult:screen==='result',
+      isEmergency:screen==='emergency', isFacilities:screen==='facilities', isDetail:screen==='detail', isSummary:screen==='summary',
+
+      steps: [
+        { n:1, title:'Descrivi i sintomi', body:'A parole tue o con esempi guidati' },
+        { n:2, title:'Controllo di sicurezza', body:'Verifichiamo i segnali da non ignorare' },
+        { n:3, title:'Ricevi l\u2019orientamento', body:'Livello di urgenza e percorso consigliato' },
+      ],
+      startTriage:this.startTriage, goFacilitiesGeneric:this.goFacilitiesGeneric,
+
+      privacyPoints: ['Nessun account necessario','Sintomi non salvati, salvo tua scelta','Dati anonimi e cancellabili in ogni momento'],
+      consent:s.consent, toggleConsent:this.toggleConsent, consentContinue:this.consentContinue,
+      consentBoxStyle:'margin-top:18px;display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;padding:14px;border-radius:13px;border:1.5px solid '+(s.consent?'#0B5FA5':'#DCE3EC')+';background:'+(s.consent?'#EAF2FB':'#fff')+';cursor:pointer;font-family:inherit;',
+      consentCheckStyle:'flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:'+(s.consent?'#0B5FA5':'#fff')+';border:1.5px solid '+(s.consent?'#0B5FA5':'#C3CCD7')+';display:flex;align-items:center;justify-content:center;',
+      consentBtnStyle:'margin-top:18px;width:100%;height:52px;border:none;border-radius:13px;background:'+(s.consent?'#0B5FA5':'#AEBFCF')+';color:#fff;font-size:16px;font-weight:700;font-family:inherit;cursor:'+(s.consent?'pointer':'not-allowed')+';',
+
+      patientOpts, freeText:s.freeText, setText:this.setText, examples, intakeContinue:this.intakeContinue,
+
+      redflagOpts, hasRedflag, noRedflag: !hasRedflag, goEmergency:this.goEmergency, redflagContinue:this.redflagContinue,
+
+      durationOpts, feverOpts, breathOpts, factorOpts, pain:s.pain, setPain:this.setPain, painLabel, painColor, analyze:this.analyze,
+
+      r, resultBannerStyle, resultIconWrap, resultIcon, confidenceStyle, actionCardStyle,
+      hasAlternatives, alternatives, goFacilities:this.goFacilities, goSummary:this.goSummary, saveSummary:this.saveSummary,
+
+      emergencyTips: [
+        { text:'Resta seduto o sdraiato in un luogo sicuro e cerca di mantenere la calma.' },
+        { text:'Se possibile, fatti assistere da qualcuno vicino a te.' },
+        { text:'Tieni a portata documento, tessera sanitaria e lista dei farmaci.' },
+        { text:'Non assumere farmaci di tua iniziativa senza indicazione medica.' },
+      ],
+      goEmergencyFacilities:this.goEmergencyFacilities,
+
+      facilities, facCount, facListTitle, facBannerOn, facBannerText, facBannerStyle,
+
+      d,
+
+      summaryTime, summaryRows, summaryReco, exportPdf:this.exportPdf, shareSummary:this.shareSummary, restart:this.restart,
+
+      toast: s.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>
